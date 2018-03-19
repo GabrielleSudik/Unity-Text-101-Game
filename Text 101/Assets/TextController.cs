@@ -15,8 +15,8 @@ public class TextController : MonoBehaviour {
 
 	//here's an enum to keep track of states:
 	//the states come from the game design document
-	private enum States {cell, sheets_0, mirror, lock_0, cell_mirror, hall, sheets_1,
-		lock_1, freedom};
+	private enum States {cell, sheets_0, mirror, lock_0, cell_mirror, hall_0, sheets_1,
+		lock_1};
 
 		//YOU ARE TAKING A BREAK. might need to add another state here for the hall
 		//or just check the GDD for what comes next
@@ -48,8 +48,12 @@ public class TextController : MonoBehaviour {
 			state_mirror ();
 		} else if (myState == States.cell_mirror) {
 			state_cell_mirror();
-		} else if (myState == States.hall){
-			state_hall();
+		} else if (myState == States.hall_0){
+			state_hall_0();
+		} else if (myState == States.sheets_1){
+			state_sheets_1();
+		} else if (myState == States.lock_1){
+			state_lock_1();
 		}
 	}
 
@@ -101,36 +105,63 @@ public class TextController : MonoBehaviour {
 	{
 		text.text = "Your mirror is dim and dirty. " +
 		"It's also barely attached to the wall. " +
-		"You could pry it loose if you tug hard.\n\n" +
-		"Press R to return to roaming around your cell. " +
-		"Press T to tug the mirror off the wall.";
+		"You pry it loose with your hands. It falls and shatters, " +
+		"and one of the pieces is long and slim. You take it.\n\n" +
+		"Press R to return to roaming around your cell ";
 		if (Input.GetKeyDown (KeyCode.R)) {
-			myState = States.cell;
-		} 
-		else if (Input.GetKeyDown(KeyCode.T)){
 			myState = States.cell_mirror;
-		}
+		} 
 
 	}
 
 	void state_cell_mirror ()
 	{
-		text.text = "You pry the mirror off the wall then slam it on " +
-		"the floor. It shatters into several pieces, one of which " +
-		"is long and slim. You use the piece to pick the door's lock\n\n" +
-		"Press H to step into the hall outside your cell.";
-		if (Input.GetKeyDown (KeyCode.H)) {
-			myState = States.hall;
+		text.text = "You are still in your dingy prison cell, " +
+		"but now you are holding a shard of broken mirror. \n\n" +
+		"Press L to check the lock. " +
+		"Press S to inspect the sheets.";
+		if (Input.GetKeyDown (KeyCode.S)) {
+			myState = States.sheets_1;
+		} 
+		if (Input.GetKeyDown (KeyCode.L)) {
+			myState = States.lock_1;
+		}
+
+	}
+
+	void state_sheets_1 ()
+	{
+		text.text = "These sheets are still threadbare and dirty. " +
+		"In a fit of rage, you use the mirror shard to rip them to shreds. " +
+		"They are now even more useless.\n\n" +
+		"Press R to return to roaming around your cell.";
+		if (Input.GetKeyDown (KeyCode.R)) {
+			myState = States.cell_mirror;
 		} 
 
 	}
 
-	void state_hall ()
+
+	void state_lock_1 ()
+	{
+		text.text = "You check the lock, then insert the " +
+		"long shard of mirror, wiggling it until you hear a click. " +
+		"The door unlocks!\n\n" +
+		"Press H to step into the hall outside your cell.";
+		if (Input.GetKeyDown (KeyCode.H)) {
+			myState = States.hall_0;
+		} 
+
+	}
+
+
+	void state_hall_0 ()
 	{
 		text.text = "You are in the hall outside of your cell.\n\n" +
-		"You will finish this later.";
-		if (Input.GetKeyDown (KeyCode.H)) {
-			myState = States.hall;
+		"You're done for now. (Until the programmer writes more code).\n\n" +
+		"Press P to play again!";
+		if (Input.GetKeyDown (KeyCode.P)) {
+			myState = States.cell;
 		} 
 
 	}
